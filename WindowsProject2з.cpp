@@ -68,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
         szTitle,
         WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        255, 220,
+        480, 220,
         NULL,
         NULL,
         hInstance,
@@ -120,11 +120,15 @@ int WINAPI WinMain(HINSTANCE hInstance,
 #define ID_BUTTON_DIV    113
 #define ID_BUTTON_RES   114
 #define ID_BUTTON_C    115
+#define ID_BUTTON_del  116
+#define ID_BUTTON_MIN  117
+#define ID_BUTTON_dr  118
+#define ID_BUTTON_kor  119
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     // Структура класса кнопки-------------------------------------------------------------------------------------
-    static HWND hButton[17], hEdit, hListBox;
+    static HWND hButton[20], hEdit, hListBox;
     PAINTSTRUCT ps;
     HDC hdc;
     int i = 0;
@@ -133,7 +137,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        hEdit = CreateWindow(_T("edit"), _T("0"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT, 10, 5, 230, 35, hWnd, (HMENU)ID_EDIT, hInst, 0);
+        hEdit = CreateWindow(_T("edit"), _T("0"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT, 10, 5, 400, 35, hWnd, (HMENU)ID_EDIT, hInst, 0);
         hButton[0] = CreateWindow(_T("Button"), _T("0"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 10, 150, 130, 30, hWnd, (HMENU)ID_BUTTON, hInst, 0);
         hButton[1] = CreateWindow(_T("Button"), _T("1"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 10, 115, 40, 30, hWnd, (HMENU)ID_BUTTON_1, hInst, 0);
         hButton[2] = CreateWindow(_T("Button"), _T("2"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 55, 115, 40, 30, hWnd, (HMENU)ID_BUTTON_2, hInst, 0);
@@ -149,7 +153,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         hButton[12] = CreateWindow(_T("Button"), _T("*"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 115, 43, 30, hWnd, (HMENU)ID_BUTTON_MUL, hInst, 0);
         hButton[13] = CreateWindow(_T("Button"), _T("/"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 196, 115, 43, 30, hWnd, (HMENU)ID_BUTTON_DIV, hInst, 0);
         hButton[14] = CreateWindow(_T("Button"), _T("="), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 150, 90, 30, hWnd, (HMENU)ID_BUTTON_RES, hInst, 0);
-        hButton[15] = CreateWindow(_T("Button"), _T("C"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 45, 90, 30, hWnd, (HMENU)ID_BUTTON_C, hInst, 0);
+        hButton[15] = CreateWindow(_T("Button"), _T("C"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 365, 45, 90, 30, hWnd, (HMENU)ID_BUTTON_C, hInst, 0);
+        hButton[16] = CreateWindow(_T("Button"), _T("^2"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 45, 40, 30, hWnd, (HMENU)ID_BUTTON_del, hInst, 0);
+        hButton[17] = CreateWindow(_T("Button"), _T("(-1)"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 196, 45, 43, 30, hWnd, (HMENU)ID_BUTTON_MIN, hInst, 0);
+        hButton[18] = CreateWindow(_T("Button"), _T("sqrt"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 243, 45, 43, 30, hWnd, (HMENU)ID_BUTTON_kor, hInst, 0);
+        hButton[19] = CreateWindow(_T("Button"), _T("1/x"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 290, 45, 40, 30, hWnd, (HMENU)ID_BUTTON_dr, hInst, 0);
         break;
     case WM_COMMAND:
         if ((LOWORD(wParam) == ID_BUTTON) && (HIWORD(wParam) == BN_CLICKED))
@@ -272,6 +280,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             buf[0] = 0;
         }
 
+        if ((LOWORD(wParam) == ID_BUTTON_del) && (HIWORD(wParam) == BN_CLICKED))
+        {
+            GetWindowText(hEdit, buf, sizeof(buf));
+            StrCat(buf, TEXT("^2"));
+            SetWindowText(hEdit, buf);
+        }
+        if ((LOWORD(wParam) == ID_BUTTON_MIN) && (HIWORD(wParam) == BN_CLICKED))
+        {
+            GetWindowText(hEdit, buf, sizeof(buf));
+            StrCat(buf, TEXT("(-1)"));
+            SetWindowText(hEdit, buf);
+        }
+        if ((LOWORD(wParam) == ID_BUTTON_dr) && (HIWORD(wParam) == BN_CLICKED))
+        {
+            GetWindowText(hEdit, buf, sizeof(buf));
+            StrCat(buf, TEXT("1/x"));
+            SetWindowText(hEdit, buf);
+        }
+        if ((LOWORD(wParam) == ID_BUTTON_kor) && (HIWORD(wParam) == BN_CLICKED))
+        {
+            GetWindowText(hEdit, buf, sizeof(buf));
+            StrCat(buf, TEXT("sqrt"));
+            SetWindowText(hEdit, buf);
+        }
         break;
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
@@ -298,6 +330,10 @@ TCHAR* Calculate(TCHAR* buf)
     std::map<TCHAR, size_t> map; // карата весов символов
     map.insert(std::make_pair(TEXT('*'), 3));
     map.insert(std::make_pair(TEXT('/'), 3));
+    map.insert(std::make_pair(TEXT('^2'), 2));
+    map.insert(std::make_pair(TEXT('sqrt'), 2));
+    map.insert(std::make_pair(TEXT('1/x'), 2));
+    map.insert(std::make_pair(TEXT('(-1)'), 2));
     map.insert(std::make_pair(TEXT('+'), 2));
     map.insert(std::make_pair(TEXT('-'), 2));
     map.insert(std::make_pair(TEXT('('), 1));
@@ -349,7 +385,7 @@ TCHAR* Calculate(TCHAR* buf)
     }
     std::stack<double> dstack;
     std::basic_stringstream<TCHAR> ss(srpn);
-    double d, d1;
+    double d, d1,r=1.0;
     TCHAR c;
     while (ss.get(c)) // вычисление результата
     {
@@ -378,6 +414,26 @@ TCHAR* Calculate(TCHAR* buf)
                 break;
             case TEXT('/'):
                 dstack.push(d / d1);
+            case TEXT('^2'):
+            {
+                r = d * d;
+                dstack.push(r);
+            }
+            case TEXT('(-1)'):
+            {
+                r = d * (-1);
+                dstack.push(r);
+            }
+            case TEXT('sqrt'):
+            {
+                r = sqrt(d);
+                dstack.push(r);
+            }
+            case TEXT('1/x'):
+            {
+                r = 1. / d;
+                dstack.push(r);
+            }
                 break;
             }
         }
