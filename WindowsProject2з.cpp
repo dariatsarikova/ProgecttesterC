@@ -24,6 +24,15 @@ TCHAR* Calculate(TCHAR* buf);
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
+void MyMenu(HWND hWnd)
+{
+    HMENU hmenu = CreateMenu();
+    AppendMenu(hmenu, MF_POPUP, 2, L"Close");
+    AppendMenu(hmenu, MF_POPUP, 10, L"Matrices");
+    AppendMenu(hmenu, MF_POPUP, 15, L"Matrices equations");
+    SetMenu(hWnd,hmenu);
+}
+
 // Главная часть программы-------------------------------------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hInstance,
     HINSTANCE hPrevInstance,
@@ -68,7 +77,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
         szTitle,
         WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        320, 220,
+        320, 260,
         NULL,
         NULL,
         hInstance,
@@ -137,6 +146,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
+        MyMenu(hWnd);
         hEdit = CreateWindow(_T("edit"), _T("0"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT, 10, 5, 280, 35, hWnd, (HMENU)ID_EDIT, hInst, 0);
         hButton[0] = CreateWindow(_T("Button"), _T("0"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 10, 150, 130, 30, hWnd, (HMENU)ID_BUTTON, hInst, 0);
         hButton[1] = CreateWindow(_T("Button"), _T("1"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 10, 115, 40, 30, hWnd, (HMENU)ID_BUTTON_1, hInst, 0);
@@ -286,6 +296,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             StrCat(buf, TEXT("^2"));
             SetWindowText(hEdit, buf);
         }
+        break;
+    case WIM_CLOSE:
+        CloseWindow(hWnd);
         break;
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);

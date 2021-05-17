@@ -1,4 +1,4 @@
 ﻿  WindowsProject2з.cpp
-C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(315,31): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
-C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(397,18): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
+C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(328,31): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
+C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(410,18): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
   WindowsProject2з.vcxproj -> C:\Users\hp\Desktop\WindowsProject2з\Debug\WindowsProject2з.exe
