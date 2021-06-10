@@ -1,4 +1,6 @@
 ﻿  WindowsProject2з.cpp
 C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(328,31): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
 C:\Users\hp\Desktop\WindowsProject2з\WindowsProject2з.cpp(410,18): warning C4066: знаки после первого в константе из двухбайтовых знаков пропускаются
+LINK : warning LNK4075: не учитывается "/INCREMENTAL" из-за спецификации "/PROFILE"
+WindowsProject2з.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/OPT:REF"
   WindowsProject2з.vcxproj -> C:\Users\hp\Desktop\WindowsProject2з\Debug\WindowsProject2з.exe
